@@ -1,0 +1,12 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: GCPGKEWorkloadIdentityV1
+metadata:
+  name: gke-enforce-workloadidentity
+spec:
+  enforcementAction: deny
+  match:
+    kinds:
+    - apiGroups:
+      - container.cnrm.cloud.google.com
+      kinds:
+      - ContainerCluster
