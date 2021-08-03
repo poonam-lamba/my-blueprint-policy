@@ -1,0 +1,18 @@
+---
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: gcpgkeworkloadidentityv1
+  annotations:
+    description: Enforce usage of Workload Identity for GKE clusters.
+spec:
+  crd:
+    spec:
+      names:
+        kind: GCPGKEWorkloadIdentityV1
+  targets:
+  - rego: "package gcpgkeworkloadidentityv1\n \nreview_cluster := input.review.object\n
+      \n\ncheckValue(value) {\n    value.workloadIdentityConfig    \n}\n \nviolation[{\"msg\":
+      msg}] {\n    value := review_cluster.spec\n    not checkValue(value) \n    msg
+      := \"The GKE node pool must have Workload Identity enabled.\"\n}\n"
+    target: admission.k8s.gatekeeper.sh
